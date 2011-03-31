@@ -7,6 +7,6 @@ inbound_services:
   - mail
 
 handlers:
-  - url /_ah/mail/weekly@.*\.appspotmail\.com
+  - url: /_ah/mail/weekly@.*\.appspotmail\.com
     script: handle_weekly.py
     login: admin
