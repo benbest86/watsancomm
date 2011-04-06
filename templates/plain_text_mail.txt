@@ -1,0 +1,10 @@
+{% for header, val in content.items %}
+***{{ header }}***
+    {% for sender, text in val.items %}
+    **{{ sender }}**
+    {{ text }}
+
+    {% endfor %}
+
+
+{% endfor %}

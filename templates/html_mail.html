@@ -1,0 +1,11 @@
+<html>
+<body>
+{% for header, val in content.items %}
+    <h2>{{ header }}</h2>
+    {% for sender, text in val.items %}
+        <h3>{{ sender }}</h3>
+        {{ text }}
+    {% endfor %}
+{% endfor %}
+</body>
+</html>

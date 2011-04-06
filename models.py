@@ -38,3 +38,36 @@ class WeeklyUpdate(db.Model):
     def put(self):
         self.parse()
         super(WeeklyUpdate, self).put()
+
+    @classmethod
+    def generate_summary_content(cls, updates):
+        content = {}
+        for msg in updates:
+            for header, text in msg.parse():
+                if header not in headers:
+                    headers[header] = []
+                content[header].append({'sender': msg.sender, 'text': text})
+        return content
+
+    @classmethod
+    def generate_summary_email(cls, content):
+        plain_path = os.path.join(os.path.dirname(__file__), 'templates', 'plain_text_mail.txt')
+        html_path = os.path.join(os.path.dirname(__file__), 'templates', 'html_mail.html')
+        body = webapp.template.render(content, plain_path)
+        html = webapp.template.render(content, html_path)
+        sender = "weeklysummary@watsancomm.appspotmail.com"
+        to = cls.recipients()
+        subject = "WatSan Weekly Summary Email - %s" % date.strftime("%d %b %Y")
+        email = EmailMessage(
+                body=body,
+                html=html,
+                sender=sender,
+                to=to,
+                subject=subject,
+                )
+        return email
+
+    @classmethod
+    def recipients(cls):
+        return ['ben.best@gmail.com',]
+
