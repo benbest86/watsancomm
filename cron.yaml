@@ -1,0 +1,5 @@
+cron:
+  - description: send weekly update email
+    url: /main/send_update
+    schedule: every sunday 23:55
+    timezone: Africa/Lusaka

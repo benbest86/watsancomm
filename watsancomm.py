@@ -13,9 +13,16 @@ class PreviewWeekly(webapp.RequestHandler):
         email = WeeklyUpdate.generate_summary_email(content)
         self.response.out.write(email.html)
 
-application = webapp.WSGIApplication(
-                                     [('/preview', PreviewWeekly)],
-                                     debug=True)
+class SendUpdate(webapp.RequestHandler):
+    def get(self):
+        content = WeeklyUpdate.generate_summary_content(WeeklyUpdate.get_weekly_updates())
+        email = WeeklyUpdate.generate_summary_email(content)
+        email.send()
+
+application = webapp.WSGIApplication([
+                                        ('/main/preview', PreviewWeekly),
+                                        ('/main/send_update', SendUpdate),
+                                     ], debug=True,)
 
 def main():
     run_wsgi_app(application)
