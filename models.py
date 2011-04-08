@@ -1,4 +1,5 @@
 import os, re
+from datetime import date
 from google.appengine.ext import db, webapp
 from google.appengine.ext.webapp import template
 from google.appengine.api.mail import EmailMessage
@@ -59,7 +60,7 @@ class WeeklyUpdate(db.Model):
         html = template.render(html_path, content)
         sender = "weeklysummary@watsancomm.appspotmail.com"
         to = cls.recipients()
-        subject = "WatSan Weekly Summary Email - %s" % date.strftime("%d %b %Y")
+        subject = "WatSan Weekly Summary Email - %s" % date.today().strftime("%d %b %Y")
         email = EmailMessage(
                 body=body,
                 html=html,
