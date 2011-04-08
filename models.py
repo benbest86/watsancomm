@@ -47,8 +47,8 @@ class WeeklyUpdate(db.Model):
         content = {}
         for msg in updates:
             for header, text in msg.parse():
-                if header not in headers:
-                    headers[header] = []
+                if header not in content:
+                    content[header] = []
                 content[header].append({'sender': msg.sender, 'text': text})
         return content
 
