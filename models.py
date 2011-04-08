@@ -88,7 +88,7 @@ class WeeklyUpdate(db.Model):
 
     @classmethod
     def recipients(cls):
-        return ['ben.best@gmail.com',]
+        return members_dict.keys()
 
     @classmethod
     def get_weekly_updates(cls, ref_date=None):
