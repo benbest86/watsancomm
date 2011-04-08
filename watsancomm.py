@@ -3,13 +3,15 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 from google.appengine.dist import use_library
 use_library('django', '1.2')
 from google.appengine.ext import webapp
+from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 from models import WeeklyUpdate
 
 class PreviewWeekly(webapp.RequestHandler):
     def get(self):
-        self.response.headers['Content-Type'] = 'text/plain'
-        self.response.out.write('Hello, webapp World!')
+        content = WeeklyUpdate.generate_summary_content([])
+        path = os.path.join(os.path.dirname(__file__), 'templates', 'html_mail.html')
+        self.response.out.write(template.render(path, content))
 
 application = webapp.WSGIApplication(
                                      [('/', PreviewWeekly)],
