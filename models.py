@@ -1,4 +1,7 @@
-import os, re
+import os, re, logging
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+from google.appengine.dist import use_library
+use_library('django', '1.2')
 from datetime import date
 from google.appengine.ext import db, webapp
 from google.appengine.ext.webapp import template
