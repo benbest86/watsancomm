@@ -14,7 +14,7 @@ class PreviewWeekly(webapp.RequestHandler):
         self.response.out.write(email.html)
 
 application = webapp.WSGIApplication(
-                                     [('/', PreviewWeekly)],
+                                     [('/preview', PreviewWeekly)],
                                      debug=True)
 
 def main():

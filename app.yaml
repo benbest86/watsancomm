@@ -7,7 +7,7 @@ inbound_services:
   - mail
 
 handlers:
-  - url: /
+  - url: /preview
     script: watsancomm.py
   - url: /_ah/mail/weekly@.*\.appspotmail\.com
     script: handle_weekly.py
