@@ -61,7 +61,9 @@ class WeeklyUpdate(db.Model):
             for header, text in msg.parse():
                 if header not in content:
                     content[header] = []
-                content[header].append({'sender': msg.sender, 'text': text})
+                # use members_dict.get in case the sender has been removed from the MEMBERS list since
+                # they sent an email to the list (although this is unlikely).
+                content[header].append({'sender': members_dict.get(msg.sender, msg.sender), 'text': text})
         return content
 
     @classmethod
