@@ -8,3 +8,9 @@ MEMBERS = (
         ('duncanmcnichol@ewb.ca', 'Duncan'),
         ('megancampbell@ewb.ca', 'Megan'),
 )
+
+# integer from 0 to 6 where Monday is 0 and Sunday is 6
+# like the date.weekday() function
+# http://docs.python.org/library/datetime.html#datetime.date.weekday
+# the weekly email is generated and sent at 23:59 of this day.
+CUTOFF_DAY = 6

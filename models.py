@@ -2,11 +2,11 @@ import os, re, logging
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 from google.appengine.dist import use_library
 use_library('django', '1.2')
-from datetime import date
+from datetime import date, datetime, timedelta
 from google.appengine.ext import db, webapp
 from google.appengine.ext.webapp import template
 from google.appengine.api.mail import EmailMessage
-from settings import TEMPLATE_DIR, MEMBERS
+from settings import TEMPLATE_DIR, MEMBERS, CUTOFF_DAY
 
 
 class ValidationError(Exception):
@@ -88,3 +88,25 @@ class WeeklyUpdate(db.Model):
     def recipients(cls):
         return ['ben.best@gmail.com',]
 
+    @classmethod
+    def get_weekly_updates(cls, ref_date=None):
+        """
+        Gets all weekly updates for the week the given timestamp belongs to.
+        """
+        query = cls.all()
+        if ref_date is None:
+            ref_date = date.today()
+        date_diff = ref_date.weekday() - CUTOFF_DAY
+        if date_diff <= 0:
+            # we have wrapped around the week so add 6 days
+            t_delta = timedelta(date_diff + 6)
+        elif date_diff > 0:
+            # remove one day from the diff so we don't get a one day overlap
+            # with last week
+            t_delta = timedelta(date_diff - 1)
+        start_datetime = datetime.fromordinal((ref_date.toordinal())) - t_delta
+        # filter out only updates received after the start time
+        query.filter('datetime_received_at >=', start_datetime)
+        # order earliest to latest
+        query.order('datetime_received_at')
+        return query
