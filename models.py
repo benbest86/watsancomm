@@ -59,6 +59,8 @@ class WeeklyUpdate(db.Model):
         content = {}
         for msg in updates:
             for header, text in msg.parse():
+                # do some sort of standardizing of case and whitespace to avoid duplicate headers
+                header = header.strip().title()
                 if header not in content:
                     content[header] = []
                 # use members_dict.get in case the sender has been removed from the MEMBERS list since
