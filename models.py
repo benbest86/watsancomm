@@ -6,12 +6,16 @@ from datetime import date
 from google.appengine.ext import db, webapp
 from google.appengine.ext.webapp import template
 from google.appengine.api.mail import EmailMessage
-from settings import TEMPLATE_DIR
+from settings import TEMPLATE_DIR, MEMBERS
 
+
+class ValidationError(Exception):
+    pass
 
 class ParseError(Exception):
     pass
 
+members_dict = dict(MEMBERS)
 
 class WeeklyUpdate(db.Model):
     sender = db.StringProperty(required=True)
@@ -42,7 +46,12 @@ class WeeklyUpdate(db.Model):
         return parsed_body
 
     def put(self):
-        self.parse()
+        try:
+            self.parse()
+        except ParseError:
+            raise ValidationError("Failed to parse message.")
+        if self.sender not in members_dict:
+            raise ValidationError("The sender %s is not a recognized member." % self.sender)
         super(WeeklyUpdate, self).put()
 
     @classmethod
