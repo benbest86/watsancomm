@@ -5,8 +5,6 @@ TEMPLATE_DIR = os.path.join(ROOT_PATH, 'templates')
 
 MEMBERS = (
         ('ben.best@gmail.com', 'Ben'),
-        ('duncanmcnichol@ewb.ca', 'Duncan'),
-        ('megancampbell@ewb.ca', 'Megan'),
 )
 
 # integer from 0 to 6 where Monday is 0 and Sunday is 6
