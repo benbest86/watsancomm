@@ -1,6 +1,7 @@
 import os, re
 from google.appengine.ext import db, webapp
 from google.appengine.api.mail import EmailMessage
+from settings import TEMPLATE_DIR
 
 
 class ParseError(Exception):
@@ -51,8 +52,8 @@ class WeeklyUpdate(db.Model):
 
     @classmethod
     def generate_summary_email(cls, content):
-        plain_path = os.path.join(os.path.dirname(__file__), 'templates', 'plain_text_mail.txt')
-        html_path = os.path.join(os.path.dirname(__file__), 'templates', 'html_mail.html')
+        plain_path = os.path.join(TEMPLATE_DIR, 'plain_text_mail.txt')
+        html_path = os.path.join(TEMPLATE_DIR, 'html_mail.html')
         body = webapp.template.render(content, plain_path)
         html = webapp.template.render(content, html_path)
         sender = "weeklysummary@watsancomm.appspotmail.com"

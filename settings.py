@@ -4,7 +4,4 @@ ROOT_PATH = os.path.join(os.path.dirname(__file__))
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
 )
-TEMPLATE_DIRS = (
-        os.path.join(ROOT_PATH, 'templates'),
-        )
-
+TEMPLATE_DIR = os.path.join(ROOT_PATH, 'templates')
