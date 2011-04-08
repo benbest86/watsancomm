@@ -9,7 +9,7 @@ from models import WeeklyUpdate
 
 class PreviewWeekly(webapp.RequestHandler):
     def get(self):
-        content = WeeklyUpdate.generate_summary_content([])
+        content = WeeklyUpdate.generate_summary_content(WeeklyUpdate.get_weekly_updates())
         email = WeeklyUpdate.generate_summary_email(content)
         self.response.out.write(email.html)
 
