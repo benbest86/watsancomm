@@ -56,8 +56,8 @@ class WeeklyUpdate(db.Model):
     def generate_summary_email(cls, content):
         plain_path = os.path.join(TEMPLATE_DIR, 'plain_text_mail.txt')
         html_path = os.path.join(TEMPLATE_DIR, 'html_mail.html')
-        body = template.render(plain_path, content)
-        html = template.render(html_path, content)
+        body = template.render(plain_path, {'content': content})
+        html = template.render(html_path, {'content': content})
         sender = "weeklysummary@watsancomm.appspotmail.com"
         to = cls.recipients()
         subject = "WatSan Weekly Summary Email - %s" % date.today().strftime("%d %b %Y")

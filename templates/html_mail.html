@@ -1,11 +1,11 @@
 <html>
 <body>
 <h1>Weekly Update</h1>
-{% for header, val in content.items %}
+{% for header, entries in content.items %}
     <h2>{{ header }}</h2>
-    {% for sender, text in val.items %}
-        <h3>{{ sender }}</h3>
-        {{ text }}
+    {% for entry in entries %}
+        <h3>{{ entry.sender }}</h3>
+        {{ entry.text }}
     {% endfor %}
 {% endfor %}
 </body>
