@@ -25,3 +25,5 @@ TODO
     more pretty
 *   Reminders for recipients at time interval before the weekly summary is
     to be sent out
+*   Amalgamate multiple emails from the same sender in the same week to allow
+    updates without multiple name entries.
