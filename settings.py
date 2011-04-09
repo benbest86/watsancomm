@@ -4,7 +4,8 @@ ROOT_PATH = os.path.join(os.path.dirname(__file__))
 TEMPLATE_DIR = os.path.join(ROOT_PATH, 'templates')
 
 MEMBERS = (
-        ('ben.best@gmail.com', 'Ben'),
+        ('benbest@example.com', 'Ben Best'),
+        ('user2@example.com', 'User 2'),
 )
 
 # integer from 0 to 6 where Monday is 0 and Sunday is 6
@@ -12,3 +13,6 @@ MEMBERS = (
 # http://docs.python.org/library/datetime.html#datetime.date.weekday
 # the weekly email is generated and sent at 23:59 of this day.
 CUTOFF_DAY = 6
+
+# import from local_settings - proper email addresses will be here
+from local_settings import *
