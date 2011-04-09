@@ -5,7 +5,7 @@ use_library('django', '1.2')
 from google.appengine.ext import webapp 
 from google.appengine.ext.webapp.mail_handlers import InboundMailHandler 
 from google.appengine.ext.webapp.util import run_wsgi_app
-from models import WeeklyUpdate
+from models import WeeklyUpdate, ValidationError
 
 class WeeklyUpdateHandler(InboundMailHandler):
     def receive(self, mail_message):
@@ -20,7 +20,10 @@ class WeeklyUpdateHandler(InboundMailHandler):
                 plain_body=plain_body,
                 html_body=html_body,
                 )
-        wu.put()
+        try:
+            wu.put()
+        except ValidationError, e:
+            logging.warning(e.message)
 
 application = webapp.WSGIApplication([WeeklyUpdateHandler.mapping()], debug=True)
 
