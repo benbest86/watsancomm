@@ -16,12 +16,22 @@ class ParseError(Exception):
     pass
 
 members_dict = dict(MEMBERS)
+# from http://www.noah.org/wiki/RegEx_Python
+email_re = re.compile(r'[a-zA-Z0-9+_\-\.]+@[0-9a-zA-Z][.-0-9a-zA-Z]*.[a-zA-Z]+')
 
 class WeeklyUpdate(db.Model):
     sender = db.StringProperty(required=True)
     html_body = db.TextProperty()
     plain_body = db.TextProperty()
     datetime_received_at = db.DateTimeProperty(auto_now_add=True)
+
+    def __init__(self, *args, **kwargs):
+        # turn sender into an email address alone:
+        if 'sender' in kwargs:
+            m = email_re.search(kwargs['sender'])
+            if m:
+                kwargs['sender'] = m.group()
+        return super(WeeklyUpdate, self).__init__(*args, **kwargs)
 
     def parse(self):
         """
