@@ -62,7 +62,7 @@ class WeeklyUpdate(db.Model):
             raise ValidationError("Failed to parse message.")
         if self.sender not in members_dict:
             raise ValidationError("The sender %s is not a recognized member." % self.sender)
-        super(WeeklyUpdate, self).put()
+        return super(WeeklyUpdate, self).put()
 
     @classmethod
     def generate_summary_content(cls, updates):
