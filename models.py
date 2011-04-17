@@ -85,15 +85,15 @@ class WeeklyUpdate(db.Model):
                 # do some sort of standardizing of case and whitespace to avoid duplicate headers
                 header = header.strip().title()
                 if header not in content:
-                    content[header] = []
+                    content[header] = {}
                 # use members_dict.get in case the sender has been removed from the MEMBERS list since
                 # they sent an email to the list (although this is unlikely).
-                content[header].append(
-                        {
-                            'sender': members_dict.get(msg.sender, msg.sender), 
-                            'text': text, 
-                            'html': markdown(text),
-                        })
+                sender = members_dict.get(msg.sender, msg.sender)
+                if sender not in content[header]:
+                    content[header][sender] = {'text':text, 'html': markdown(text)}
+                else:
+                    content[header][sender]['text'] += text
+                    content[header][sender]['html'] += markdown(text)
         return content
 
     @classmethod

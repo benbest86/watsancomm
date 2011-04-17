@@ -2,8 +2,8 @@ Weekly Update
 
 {% for header, entries in content.items %}
 ***{{ header }}***
-    {% for entry in entries %}
-    **{{ entry.sender }}**
+    {% for sender, entry in entries %}
+    **{{ sender }}**
         {{ entry.text }}
 
     {% endfor %}
