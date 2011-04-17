@@ -117,6 +117,18 @@ class WeeklyUpdate(db.Model):
         return members_dict.keys()
 
     @classmethod
+    def missing_updates(cls):
+        rs = cls.recipients()
+        updates = cls.get_weekly_updates()
+        for u in updates:
+            try:
+                rs.remove(u.sender)
+            except ValueError:
+                # we may have already removed them if they've sent two emails
+                logging.warning("Tried to remove %s from recipients but they didn't exist. Have they sent twice?" % u.sender)
+        return rs
+
+    @classmethod
     def get_weekly_updates(cls, ref_date=None):
         """
         Gets all weekly updates for the week the given timestamp belongs to.
@@ -138,3 +150,21 @@ class WeeklyUpdate(db.Model):
         # order earliest to latest
         query.order('datetime_received_at')
         return query
+    
+    @classmethod
+    def generate_reminder_email(cls):
+        plain_path = os.path.join(TEMPLATE_DIR, 'plain_text_reminder.txt')
+        html_path = os.path.join(TEMPLATE_DIR, 'html_reminder.html')
+        body = template.render(plain_path, {})
+        html = template.render(html_path, {})
+        sender = "weekly@watsancomm.appspotmail.com"
+        bcc = cls.missing_updates()
+        subject = "WatSan Weekly: Reminder Email"
+        email = EmailMessage(
+                body=body,
+                html=html,
+                sender=sender,
+                bcc=bcc,
+                subject=subject,
+                )
+        return email

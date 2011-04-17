@@ -3,3 +3,7 @@ cron:
     url: /main/send_update
     schedule: every sunday 23:55
     timezone: Africa/Lusaka
+  - description: send weekly reminder email
+    url: /main/send_reminder
+    schedule: every friday 23:55
+    timezone: Africa/Lusaka

@@ -19,9 +19,15 @@ class SendUpdate(webapp.RequestHandler):
         email = WeeklyUpdate.generate_summary_email(content)
         email.send()
 
+class SendReminder(webapp.RequestHandler):
+    def get(self):
+        email = WeeklyUpdate.generate_reminder_email()
+        email.send()
+
 application = webapp.WSGIApplication([
                                         ('/main/preview', PreviewWeekly),
                                         ('/main/send_update', SendUpdate),
+                                        ('/main/send_reminder', SendReminder),
                                      ], debug=True,)
 
 def main():
