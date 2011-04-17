@@ -13,3 +13,6 @@ handlers:
   - url: /_ah/mail/weekly@.*\.appspotmail\.com
     script: handle_weekly.py
     login: admin
+  - url: /_ah/mail/weeklysummary@.*\.appspotmail\.com
+    script: disregard_mail.py
+    login: admin
