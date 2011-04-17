@@ -54,9 +54,11 @@ class WeeklyUpdate(db.Model):
         text under header 2
 
         and returns
-        [('Header 1', 'text under header 1'), ('Header 2', 'text under header 2')]
+        [('Header 1', 'text under header 1', '###'), ('Header 2', 'text under header 2', '')]
+
+        If using findall. Ignore the third group, just necessary for matching.
         """
-        parse_re = re.compile(r'###(.*?)###\n([^#]*)')
+        parse_re = re.compile(r'###(.*?)###(.*?)(?=(###|\Z))', re.DOTALL)
         body = self.plain_body or self.html_body
         if body is None:
             return ""
@@ -79,7 +81,7 @@ class WeeklyUpdate(db.Model):
     def generate_summary_content(cls, updates):
         content = {}
         for msg in updates:
-            for header, text in msg.parse():
+            for header, text, garbage in msg.parse():
                 # do some sort of standardizing of case and whitespace to avoid duplicate headers
                 header = header.strip().title()
                 if header not in content:
@@ -138,3 +140,5 @@ class WeeklyUpdate(db.Model):
         # order earliest to latest
         query.order('datetime_received_at')
         return query
+
+
