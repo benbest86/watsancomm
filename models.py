@@ -36,16 +36,16 @@ class WeeklyUpdate(db.Model):
     def parse(self):
         """
         Takes input like
-        *** Header 1 ***
+        ### Header 1 ###
         text under header 1
 
-        *** Header 2 ***
+        ### Header 2 ###
         text under header 2
 
         and returns
         [('Header 1', 'text under header 1'), ('Header 2', 'text under header 2')]
         """
-        parse_re = re.compile(r'\*\*\*(.*?)\*\*\*\n([^*]*)')
+        parse_re = re.compile(r'###(.*?)###\n([^#]*)')
         body = self.plain_body or self.html_body
         if body is None:
             return ""
