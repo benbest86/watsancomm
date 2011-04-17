@@ -1,4 +1,6 @@
 import os, re, logging
+
+
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 from google.appengine.dist import use_library
 use_library('django', '1.2')
@@ -8,6 +10,15 @@ from google.appengine.ext.webapp import template
 from google.appengine.api.mail import EmailMessage
 from settings import TEMPLATE_DIR, MEMBERS, CUTOFF_DAY
 
+# try importing markdown - if it fails
+# make the markdown function simply escape
+# the input and return it
+try:
+    from markdown import markdown
+except:
+    import cgi
+    def markdown(text):
+        return cgi.escape(text)
 
 class ValidationError(Exception):
     pass
@@ -75,7 +86,12 @@ class WeeklyUpdate(db.Model):
                     content[header] = []
                 # use members_dict.get in case the sender has been removed from the MEMBERS list since
                 # they sent an email to the list (although this is unlikely).
-                content[header].append({'sender': members_dict.get(msg.sender, msg.sender), 'text': text})
+                content[header].append(
+                        {
+                            'sender': members_dict.get(msg.sender, msg.sender), 
+                            'text': text, 
+                            'html': markdown(text),
+                        })
         return content
 
     @classmethod

@@ -10,19 +10,23 @@ The service runs on appengine so please modify app.yaml for your needs if
 you wish to use it.
 
 Currently the app does some very rudimentary parsing with a regular expression
-found in the WeeklyUpdate.parse() in models.py. Feel free to modify if you
-want different parsing.
+found in the WeeklyUpdate.parse() in models.py. It parses a header and the text
+under that header. Feel free to modify if you want different parsing. The
+parsed text is then fed through markdown for the html email body.
 
 Recipients and allowed senders are saved in the MEMBERS variable in settings.py
 or optionally in local_settings.py.
+
+Requires markdown (and thus elementtree) for pretty emails, but degrades
+(relatively) gracefully.
 
 TODO
 ====
 
 *   Notification email if contribution does not parse properly
 *   More pretty html email
-*   Add ability to parse a markup format (such as markdown) to make things
-    more pretty
+*   <del>Add ability to parse a markup format (such as markdown) to make things
+    more pretty</del>
 *   Reminders for recipients at time interval before the weekly summary is
     to be sent out
 *   Amalgamate multiple emails from the same sender in the same week to allow

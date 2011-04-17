@@ -5,7 +5,7 @@
     <h2>{{ header }}</h2>
     {% for entry in entries %}
         <h3>{{ entry.sender }}</h3>
-        {{ entry.text }}
+        {{ entry.html|safe }}
     {% endfor %}
 {% endfor %}
 </body>
