@@ -9,6 +9,7 @@ from models import WeeklyUpdate, ValidationError
 
 class DisregardHandler(InboundMailHandler):
     def receive(self, mail_message):
+        logging.info('Disregarding email from %s.' % mail_message.sender)
         pass
 
 application = webapp.WSGIApplication([DisregardHandler.mapping()], debug=True)
