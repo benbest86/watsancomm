@@ -5,5 +5,5 @@ cron:
     timezone: Africa/Lusaka
   - description: send weekly reminder email
     url: /main/send_reminder
-    schedule: every friday 23:55
+    schedule: every day 07:55
     timezone: Africa/Lusaka
