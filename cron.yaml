@@ -1,7 +1,7 @@
 cron:
-  - description: send weekly update email
-    url: /main/send_update
-    schedule: every sunday 23:55
+  - description: check and potentially send weekly update email
+    url: /main/send_scheduled_update
+    schedule: every day 23:55
     timezone: Africa/Lusaka
   - description: send weekly reminder email
     url: /main/send_reminder

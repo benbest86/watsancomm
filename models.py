@@ -54,9 +54,11 @@ class WeeklyUpdate(db.Model):
         text under header 2
 
         and returns
-        [('Header 1', 'text under header 1'), ('Header 2', 'text under header 2')]
+        [('Header 1', 'text under header 1', '###'), ('Header 2', 'text under header 2', '')]
+
+        If using findall. Ignore the third group, just necessary for matching.
         """
-        parse_re = re.compile(r'###(.*?)###\n([^#]*)')
+        parse_re = re.compile(r'###(.*?)###(.*?)(?=(###|\Z))', re.DOTALL)
         body = self.plain_body or self.html_body
         if body is None:
             return ""
@@ -79,19 +81,19 @@ class WeeklyUpdate(db.Model):
     def generate_summary_content(cls, updates):
         content = {}
         for msg in updates:
-            for header, text in msg.parse():
+            for header, text, garbage in msg.parse():
                 # do some sort of standardizing of case and whitespace to avoid duplicate headers
                 header = header.strip().title()
                 if header not in content:
-                    content[header] = []
+                    content[header] = {}
                 # use members_dict.get in case the sender has been removed from the MEMBERS list since
                 # they sent an email to the list (although this is unlikely).
-                content[header].append(
-                        {
-                            'sender': members_dict.get(msg.sender, msg.sender), 
-                            'text': text, 
-                            'html': markdown(text),
-                        })
+                sender = members_dict.get(msg.sender, msg.sender)
+                if sender not in content[header]:
+                    content[header][sender] = {'text':text, 'html': markdown(text)}
+                else:
+                    content[header][sender]['text'] += text
+                    content[header][sender]['html'] += markdown(text)
         return content
 
     @classmethod

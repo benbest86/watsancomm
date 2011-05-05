@@ -3,8 +3,8 @@
 <h1>Weekly Update</h1>
 {% for header, entries in content.items %}
     <h2>{{ header }}</h2>
-    {% for entry in entries %}
-        <h3>{{ entry.sender }}</h3>
+    {% for sender, entry in entries.items %}
+        <h3>{{ sender }}</h3>
         {{ entry.html|safe }}
     {% endfor %}
 {% endfor %}
