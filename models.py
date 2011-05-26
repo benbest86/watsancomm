@@ -102,7 +102,7 @@ class WeeklyUpdate(db.Model):
         html_path = os.path.join(TEMPLATE_DIR, 'html_mail.html')
         body = template.render(plain_path, {'content': content})
         html = template.render(html_path, {'content': content})
-        sender = "weeklysummary@watsancomm.appspotmail.com"
+        sender = "weekly-noreply@watsancomm.appspotmail.com"
         to = cls.recipients()
         subject = "WatSan Weekly Summary Email - %s" % date.today().strftime("%d %b %Y")
         email = EmailMessage(
@@ -159,7 +159,7 @@ class WeeklyUpdate(db.Model):
         html_path = os.path.join(TEMPLATE_DIR, 'html_reminder.html')
         body = template.render(plain_path, {})
         html = template.render(html_path, {})
-        sender = "weekly@watsancomm.appspotmail.com"
+        sender = "weekly-noreply@watsancomm.appspotmail.com"
         bcc = cls.missing_updates()
         subject = "WatSan Weekly: Reminder Email"
         email = EmailMessage(
