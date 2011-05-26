@@ -27,7 +27,7 @@ TODO
 *   More pretty html email
 *   <del>Add ability to parse a markup format (such as markdown) to make things
     more pretty</del>
-*   Reminders for recipients at time interval before the weekly summary is
-    to be sent out
-*   Amalgamate multiple emails from the same sender in the same week to allow
-    updates without multiple name entries.
+*   <del>Reminders for recipients at time interval before the weekly summary is
+    to be sent out</del>
+*   <del>Amalgamate multiple emails from the same sender in the same week to
+    allow updates without multiple name entries.</del>
