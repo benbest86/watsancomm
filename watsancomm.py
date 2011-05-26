@@ -24,9 +24,13 @@ class SendReminder(webapp.RequestHandler):
     def get(self):
         reminder_day = (CUTOFF_DAY - 2) >= 0 and (CUTOFF_DAY - 2) or (CUTOFF_DAY + 5)
         if datetime.date.today().weekday() == reminder_day:
-            logging.info('Reminder scheduled today! Sending.')
+            logging.info('Reminder scheduled today!')
             email = WeeklyUpdate.generate_reminder_email()
-            email.send()
+            if email is not None:
+                logging.info('Sending')
+                email.send()
+            else:
+                logging.info('Everyone has sent updates! Skipping reminder.')
         else:
             logging.info('No reminder scheduled today.')
 

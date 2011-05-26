@@ -161,6 +161,8 @@ class WeeklyUpdate(db.Model):
         html = template.render(html_path, {})
         sender = "weekly-noreply@watsancomm.appspotmail.com"
         bcc = cls.missing_updates()
+        if not len(bcc):
+            return None
         subject = "WatSan Weekly: Reminder Email"
         email = EmailMessage(
                 body=body,
