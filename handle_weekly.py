@@ -10,6 +10,8 @@ from models import WeeklyUpdate, ValidationError
 class WeeklyUpdateHandler(InboundMailHandler):
     def receive(self, mail_message):
         sender = mail_message.sender
+        html_body = None
+        plain_body = None
         for content_type, body in mail_message.bodies('text/plain'):
             plain_body = body.decode()
         for content_type, body in mail_message.bodies('text/html'):
