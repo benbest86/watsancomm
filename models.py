@@ -26,7 +26,7 @@ class ValidationError(Exception):
 class ParseError(Exception):
     pass
 
-members_dict = dict(MEMBERS)
+members_dict = dict([[m[0].lower(), m[1]] for m in MEMBERS])
 # from http://www.noah.org/wiki/RegEx_Python
 email_re = re.compile(r'[a-zA-Z0-9+_\-\.]+@[0-9a-zA-Z][.-0-9a-zA-Z]*.[a-zA-Z]+')
 
@@ -73,7 +73,7 @@ class WeeklyUpdate(db.Model):
             self.parse()
         except ParseError:
             raise ValidationError("Failed to parse message.")
-        if self.sender not in members_dict:
+        if self.sender.lower() not in members_dict:
             raise ValidationError("The sender %s is not a recognized member." % self.sender)
         return super(WeeklyUpdate, self).put()
 
@@ -88,7 +88,7 @@ class WeeklyUpdate(db.Model):
                     content[header] = {}
                 # use members_dict.get in case the sender has been removed from the MEMBERS list since
                 # they sent an email to the list (although this is unlikely).
-                sender = members_dict.get(msg.sender, msg.sender)
+                sender = members_dict.get(msg.sender.lower(), msg.sender)
                 if sender not in content[header]:
                     content[header][sender] = {'text':text, 'html': markdown(text)}
                 else:
@@ -124,7 +124,7 @@ class WeeklyUpdate(db.Model):
         updates = cls.get_weekly_updates()
         for u in updates:
             try:
-                rs.remove(u.sender)
+                rs.remove(u.sender.lower())
             except ValueError:
                 # we may have already removed them if they've sent two emails
                 logging.warning("Tried to remove %s from recipients but they didn't exist. Have they sent twice?" % u.sender)
