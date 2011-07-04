@@ -2,7 +2,11 @@ import os, logging, datetime
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 from google.appengine.dist import use_library
 use_library('django', '1.2')
-from settings import CUTOFF_DAY
+try:
+    from settings import CUTOFF_DAY, REMINDER_DAY
+except ImportError:
+    CUTOFF_DAY = 6
+    REMINDER_DAY = 4
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 
@@ -22,8 +26,7 @@ class SendUpdate(webapp.RequestHandler):
 
 class SendReminder(webapp.RequestHandler):
     def get(self):
-        reminder_day = (CUTOFF_DAY - 2) >= 0 and (CUTOFF_DAY - 2) or (CUTOFF_DAY + 5)
-        if datetime.date.today().weekday() == reminder_day:
+        if datetime.date.today().weekday() == REMINDER_DAY:
             logging.info('Reminder scheduled today!')
             email = WeeklyUpdate.generate_reminder_email()
             if email is not None:

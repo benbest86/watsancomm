@@ -12,7 +12,9 @@ MEMBERS = (
 # like the date.weekday() function
 # http://docs.python.org/library/datetime.html#datetime.date.weekday
 # the weekly email is generated and sent at 23:59 of this day.
-CUTOFF_DAY = 6
+CUTOFF_DAY = 0
+
+REMINDER_DAY = 6
 
 # import from local_settings - proper email addresses will be here
 from local_settings import *
