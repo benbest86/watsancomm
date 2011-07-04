@@ -10,6 +10,8 @@ from google.appengine.ext.webapp import template
 from google.appengine.api.mail import EmailMessage
 from settings import TEMPLATE_DIR, MEMBERS, CUTOFF_DAY
 
+from django.utils.datastructures import SortedDict
+
 # try importing markdown - if it fails
 # make the markdown function simply escape
 # the input and return it
@@ -94,7 +96,15 @@ class WeeklyUpdate(db.Model):
                 else:
                     content[header][sender]['text'] += text
                     content[header][sender]['html'] += markdown(text)
-        return content
+        sorted_content = SortedDict()
+        def content_key(s):
+            try:
+                return int(s.split('.')[0])
+            except:
+                return s
+        for k in sorted(content.keys(), key=content_key):
+            sorted_content[k] = content[k]
+        return sorted_content
 
     @classmethod
     def generate_summary_email(cls, content):
