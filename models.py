@@ -165,10 +165,12 @@ class WeeklyUpdate(db.Model):
     
     @classmethod
     def generate_reminder_email(cls):
+        days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday',]
+        day_map = dict(zip(range(7), days))
         plain_path = os.path.join(TEMPLATE_DIR, 'plain_text_reminder.txt')
         html_path = os.path.join(TEMPLATE_DIR, 'html_reminder.html')
-        body = template.render(plain_path, {})
-        html = template.render(html_path, {})
+        body = template.render(plain_path, {'deadline': day_map[CUTOFF_DAY]})
+        html = template.render(html_path, {'deadline': day_map[CUTOFF_DAY]})
         sender = "weekly-noreply@watsancomm.appspotmail.com"
         bcc = cls.missing_updates()
         if not len(bcc):
